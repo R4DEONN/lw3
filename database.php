@@ -21,7 +21,7 @@ function connectDatabase(): PDO
     return new PDO($dsn, $user, $password);
 }
 
-function saveUserToDatabase(PDO $connection, array $userParams): int
+function saveUserToDatabase(PDO $connection, array $userParams): int|bool
 {
     $query = <<<SQL
         INSERT INTO user (first_name, last_name, middle_name, gender, birth_date, email, phone, avatar_path)
@@ -45,12 +45,12 @@ function saveUserToDatabase(PDO $connection, array $userParams): int
     catch (PDOException $e) 
     {
         echo "DataBase Error: The user could not be added.<br>".$e->getMessage();
-        return 0;
+        return false;
     } 
     catch (Exception $e) 
     {
         echo "General Error: The user could not be added.<br>".$e->getMessage();
-        return 0;
+        return false;
     }
 
 
