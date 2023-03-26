@@ -1,0 +1,12 @@
+.form
+{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    row-gap: 10px;
+}
+
+.paragraph 
+{
+    margin: 0;
+}
