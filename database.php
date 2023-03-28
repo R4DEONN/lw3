@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+require_once("classes.php");
+
 /**
 * @return array{dsn:string,username:string,password:string}
 */
@@ -21,7 +23,7 @@ function connectDatabase(): PDO
     return new PDO($dsn, $user, $password);
 }
 
-function saveUserToDatabase(PDO $connection, array $userParams): int|bool
+function saveUserToDatabase(PDO $connection, User $user): int|bool
 {
     $query = <<<SQL
         INSERT INTO user (first_name, last_name, middle_name, gender, birth_date, email, phone, avatar_path)
@@ -32,14 +34,14 @@ function saveUserToDatabase(PDO $connection, array $userParams): int|bool
     try 
     {
         $statement->execute([   
-            ':first_name' => $userParams['first_name'],
-            ':last_name' => $userParams['last_name'],
-            ':middle_name' => $userParams['middle_name'],
-            ':gender' => $userParams['gender'],
-            ':birth_date' => $userParams['birth_date'],
-            ':email' => $userParams['email'],
-            ':phone' => $userParams['phone'],
-            ':avatar_path' => $userParams['avatar_path']
+            ':first_name' => $user->getFirstName(),
+            ':last_name' => $user->getLastName(),
+            ':middle_name' => $user->getMiddleName(),
+            ':gender' => $user->getGender(),
+            ':birth_date' => $user->getBirthDate(),
+            ':email' => $user->getEmail(),
+            ':phone' => $user->getPhone(),
+            ':avatar_path' => $user->getAvatarPath()
         ]);  
     } 
     catch (PDOException $e) 
@@ -57,7 +59,7 @@ function saveUserToDatabase(PDO $connection, array $userParams): int|bool
     return (int)$connection->lastInsertId();
 }
 
-function findUserInDatabase(PDO $pdo, int $userId): ?array
+function findUserInDatabase(PDO $pdo, int $userId): ?User
 {
     // Извлекает пользователя с заданным ID из базы данных
     //  с помощью SELECT.
@@ -74,5 +76,6 @@ function findUserInDatabase(PDO $pdo, int $userId): ?array
     {
         throw new RuntimeException("User with id $userId could not be found");
     }
-    return $row ?: null;
+    $user = new User($row['user_id'], $row['first_name'], $row['last_name'], $row['middle_name'], $row['gender'], $row['birth_date'], $row['email'], $row['phone'], $row['avatar_path']);  
+    return $user ?: null;
 }

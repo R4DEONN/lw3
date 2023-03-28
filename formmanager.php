@@ -1,41 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 require_once("unique.php");
+require_once("classes.php");
 require_once("database.php");
-
-
-class User
-{
-   private ?int $userId;
-   private string $firstName;
-   private string $lastName;
-   /* ... остальные свойства */
-
-   public function __construct(?int $userId, string $firstName, string $lastName, /* ... остальные параметры */)
-   {
-       $this->userId = $userId;
-       $this->firstName = $firstName;
-       $this->lastName = $lastName;
-       /* ... инициализация остальных свойств */
-   }
-
-   public function getUserId(): ?int
-   {
-       return $this->userId;
-   }
-
-   public function getFirstName(): string
-   {
-       return $this->firstName;
-   }
-
-   public function getLastName(): string
-   {
-       return $this->lastName;
-   }
-
-   /* ... остальные методы getter */
-}
 
 
 $exist = 0;
@@ -90,22 +59,18 @@ else
     { 
         $_POST["avatar"] = null; 
     }
+$newUser = new User(null, $_POST["firstName"], $_POST["secondName"], $_POST["patronymic"], $_POST["gender"], $_POST["birthday"], $_POST["email"], $_POST["number"], $_POST["avatar"]);
 $connection = connectDatabase();
-$userId = saveUserToDatabase($connection, [
-    'first_name' => $_POST["firstName"],
-    'last_name' => $_POST["secondName"],
-    'middle_name' => $_POST["patronymic"],
-    'gender' => $_POST["gender"],
-    'birth_date' => $_POST["birthday"],
-    'email' => $_POST["email"],
-    'phone' => $_POST["number"],
-    'avatar_path' => $_POST["avatar"]
-]);
+$userId = saveUserToDatabase($connection, $newUser);
 
 if (!$userId)
 {
-    die();
+    $exist = 1;
 }
-$redirectUrl = "/show_user.php?user_id=$userId";
-header('Location: ' . $redirectUrl, true, 303);
+else
+{
+    $exist = 2;
+    $redirectUrl = "/show_user.php?user_id=$userId";
+    header('Location: ' . $redirectUrl, true, 303);
+}
 die();
