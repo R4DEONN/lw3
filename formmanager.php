@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-require_once("unique.php");
-require_once("classes.php");
-require_once("database.php");
+require_once('unique.php');
+require_once('classes.php');
+require_once('database.php');
 
 
 $exist = 0;
@@ -66,6 +66,7 @@ $userId = saveUserToDatabase($connection, $newUser);
 if (!$userId)
 {
     $exist = 1;
+    return;
 }
 else
 {

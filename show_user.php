@@ -1,6 +1,6 @@
 <?php
 
-require_once "database.php";
+require_once 'database.php';
 
 $userId = (int) $_GET['user_id'];
 if (!$userId)

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once("classes.php");
+require_once('classes.php');
 
 /**
 * @return array{dsn:string,username:string,password:string}
