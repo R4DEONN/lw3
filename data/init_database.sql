@@ -13,3 +13,5 @@ CREATE TABLE user (
     avatar_path VARCHAR(200),
     PRIMARY KEY (user_id)
 );
+
+SELECT * FROM user;

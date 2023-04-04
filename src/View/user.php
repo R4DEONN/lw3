@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var App\Model\User $user
+ */
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
   <head>
