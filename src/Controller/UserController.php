@@ -42,22 +42,34 @@ class UserController
             $requestData['birthday'], 
             $requestData['email'], 
             $requestData['number'], 
-            $requestData['avatar']
+            null
         );
         $userId = $this->userTable->add($user);
+        $this->addAvatar($userId, $requestData['avatar']);
         $redirectUrl = "/show_user.php?user_id=$userId";
         $this->writeRedirectSeeOther($redirectUrl);
     }
 
     public function showUser(array $queryParams): void
     {
-        $userId = (int) $_GET['user_id'];
+        $userId = (int) $queryParams['user_id'];
         if ($userId === 0 || !$userId) 
         {
             throw new \RuntimeException("User with id {$userId} doesn't exist");
         }
         $user = $this->userTable->find($userId);
         require __DIR__ . '/../View/user.php';
+    }
+
+    private function addAvatar(int $userId, array $avatar): void
+    {
+        $extension = pathinfo($avatar['avatar']['name'], PATHINFO_EXTENSION);
+        $dir = __DIR__ . "/../../uploads/avatar$userId.$extension";
+        if (!empty($avatar['avatar']) && $avatar['avatar']['error'] == UPLOAD_ERR_OK) 
+        { 
+            rename($avatar['avatar']['tmp_name'], $dir);
+            $this->userTable->update($userId, "avatar$userId.$extension"); 
+        }
     }
 
     private function writeRedirectSeeOther(string $url): void

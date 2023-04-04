@@ -37,7 +37,8 @@
       <p><input name="number" type="tel" placeholder="Номер телефона"/><br/><?= htmlentities($errors['numberError'] ?? "") ?></p>
       <p>
         Выберите аватар:
-        <input name="avatar" type="file" value="Аватар" accept="image/png, image/jpeg"/>
+        <input name="avatar" type="file" value="Аватар" accept="image/png,image/jpeg,image/gif"/><br/>
+        <?= htmlentities($errors['avatarError'] ?? "") ?>
       </p>
       <input name="submit" type="submit" value="Отправить" />
     </form>

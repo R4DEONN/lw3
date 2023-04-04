@@ -81,4 +81,18 @@ class UserTable
             $row['avatar_path']
         );  
     }
+
+    public function update(int $userId, string $avatar_path): void
+    {
+        $query = <<<SQL
+            UPDATE user
+            SET avatar_path = :avatar_path
+            WHERE user_id = :userId
+            SQL;
+        $statement = $this->connection->prepare($query);
+        $statement->execute([
+            ':avatar_path' => $avatar_path,
+            ':userId' => $userId
+        ]);
+    }
 }
