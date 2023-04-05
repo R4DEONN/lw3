@@ -66,7 +66,19 @@ class UserTable
         }
         return $this->createUserFromRow($row);
     }
-
+    public function update(int $userId, string $avatar_path): void
+    {
+        $query = <<<SQL
+            UPDATE user
+            SET avatar_path = :avatar_path
+            WHERE user_id = :userId
+            SQL;
+        $statement = $this->connection->prepare($query);
+        $statement->execute([
+            ':avatar_path' => $avatar_path,
+            ':userId' => $userId
+        ]);
+    }
     private function createUserFromRow(array $row): User
     {
         return new User(
@@ -80,19 +92,5 @@ class UserTable
             $row['phone'], 
             $row['avatar_path']
         );  
-    }
-
-    public function update(int $userId, string $avatar_path): void
-    {
-        $query = <<<SQL
-            UPDATE user
-            SET avatar_path = :avatar_path
-            WHERE user_id = :userId
-            SQL;
-        $statement = $this->connection->prepare($query);
-        $statement->execute([
-            ':avatar_path' => $avatar_path,
-            ':userId' => $userId
-        ]);
     }
 }

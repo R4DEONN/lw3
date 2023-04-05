@@ -1,14 +1,3 @@
-<?php
-    const EMAIL = "email";
-    const SECOND_NAME = "secondName";
-    const FIRST_NAME = "firstName";
-    const MIDDLE_NAME = "middleName";
-    const BIRTHDAY = "birthday";
-    const NUMBER = "number";
-    const GENDER = "gender";
-    const AVATAR = "avatar";    
-?>
-
 <!DOCTYPE html>
 <html lang="ru">
   <head>

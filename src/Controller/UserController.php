@@ -13,6 +13,18 @@ class UserController
     private const HTTP_STATUS_303_SEE_OTHER = 303;
 
     private UserTable $userTable;
+
+    private const USER_ID = "user_id";
+    private const EMAIL = "email";
+    private const SECOND_NAME = "secondName";
+    private const FIRST_NAME = "firstName";
+    private const MIDDLE_NAME = "middleName";
+    private const BIRTHDAY = "birthday";
+    private const NUMBER = "number";
+    private const GENDER = "gender";
+    private const AVATAR = "avatar";
+    private const ERROR = "error";
+    private const TMP_NAME = "tmp_name";
     
     public function __construct()
     {
@@ -35,17 +47,17 @@ class UserController
 
         $user = new User(
             null, 
-            $requestData['firstName'], 
-            $requestData['secondName'], 
-            $requestData['middleName'], 
-            $requestData['gender'], 
-            $requestData['birthday'], 
-            $requestData['email'], 
-            $requestData['number'], 
+            $requestData[FIRST_NAME], 
+            $requestData[SECOND_NAME],  
+            $requestData[MIDDLE_NAME],  
+            $requestData[GENDER], 
+            $requestData[BIRTHDAY], 
+            $requestData[EMAIL],  
+            $requestData[NUMBER], 
             null
         );
         $userId = $this->userTable->add($user);
-        $this->addAvatar($userId, $requestData['avatar']);
+        $this->addAvatar($userId, $requestData[AVATAR]);
         $redirectUrl = "/show_user.php?user_id=$userId";
         $this->writeRedirectSeeOther($redirectUrl);
     }
@@ -63,11 +75,11 @@ class UserController
 
     private function addAvatar(int $userId, array $avatar): void
     {
-        $extension = pathinfo($avatar['avatar']['name'], PATHINFO_EXTENSION);
-        $dir = __DIR__ . "/../../uploads/avatar$userId.$extension";
-        if (!empty($avatar['avatar']) && $avatar['avatar']['error'] == UPLOAD_ERR_OK) 
-        { 
-            rename($avatar['avatar']['tmp_name'], $dir);
+        if (!empty($avatar[AVATAR]) && $avatar[AVATAR][ERROR] == UPLOAD_ERR_OK) 
+        {
+            $extension = pathinfo($avatar[AVATAR][NAME], PATHINFO_EXTENSION);
+            $dir = __DIR__ . "/../../uploads/avatar$userId.$extension"; 
+            rename($avatar[AVATAR][TMP_NAME], $dir);
             $this->userTable->update($userId, "avatar$userId.$extension"); 
         }
     }

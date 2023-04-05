@@ -4,6 +4,19 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+const EMAIL = "email";
+const SECOND_NAME = "secondName";
+const FIRST_NAME = "firstName";
+const MIDDLE_NAME = "middleName";
+const BIRTHDAY = "birthday";
+const NUMBER = "number";
+const GENDER = "gender";
+const AVATAR = "avatar";
+const NAME = "name";
+const TMP_NAME = "tmp_name";
+const ERROR = "error";
+const TYPE = "type";
+
 if (!(isset($_POST[EMAIL]) && isset($_POST[SECOND_NAME]) && isset($_POST[FIRST_NAME]) && isset($_POST[BIRTHDAY])))
 {
     return;
@@ -37,7 +50,7 @@ if (!preg_match("/^[0-9+]*$/", $_POST[NUMBER]))
     $errors['numberError'] = "Введите корректный номер";
 }
 
-if (!empty($_FILES[AVATAR]['name']) && $_FILES[AVATAR]['type'] !== 'image/png' && $_FILES[AVATAR]['type'] !== 'image/jpeg' && $_FILES[AVATAR]['type'] !== 'image/gif')
+if (!empty($_FILES[AVATAR][NAME]) && $_FILES[AVATAR][TYPE] !== 'image/png' && $_FILES[AVATAR][TYPE] !== 'image/jpeg' && $_FILES[AVATAR][TYPE] !== 'image/gif')
 {
     $errors['avatarError'] = "Можно загружать только png, gif, jpeg";
 }
